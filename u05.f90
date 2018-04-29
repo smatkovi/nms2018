@@ -1,11 +1,22 @@
 program wannier
+  real :: Eo
+  print*,"Enter E_0"
+  read(*,*) Eo
+  call eValues(Eo)
+endprogram
+subroutine eValues(Eo)
   implicit none
   integer :: i
-  real :: Eo=0.01d0
+  real :: Eo
   real, dimension(1001) :: v1,v2,V,d
   real, dimension(1000) :: e
   real, dimension(2002) :: w
   real, dimension(1001,1001) :: H
+  if(abs(Eo) .gt. 0.01) then
+    Eo=0.01d0
+    write(*,*) "Eo out of bounds, setting to 0.01"
+  end if
+
   do i=0, 1000
     V(i)=0d0
     if(mod(i, 100) .le. 50) V(i)=Eo
@@ -52,14 +63,16 @@ program wannier
     w(i)=H(i+1,i)
   enddo
 
-  call ssteqr('T', 1001, d, e, H, 1001, w, i)
-  write(*,*) i
+  call ssteqr('N', 1001, d, e, H, 1001, w, i)
+  do i=1, 200
+    if(mod(i, 10) .eq. 0) write(*,*) d(i)
+  enddo
   
   open(13, file='u05.txt')
-
+  
   do i=1, 1000
     write (13,*) i, v1(i)
   enddo
 
   close(13)
-end program
+end subroutine eValues
