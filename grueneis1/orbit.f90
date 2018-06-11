@@ -114,8 +114,8 @@ SUBROUTINE INIT_EARTH(r,v)
 !
 !   ANFANGSWERTE MUESSEN HIER EINGESETZT WERDEN
 !
-!   r = (/ 0.0 , 0.0 /)
-!   v = (/ 0.0 , 0.0 /)
+   r = (/ 1.0 , 0.0 /)
+   v = (/ 0.0 , -0.017326 /)
 
 END
 
