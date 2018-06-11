@@ -7,7 +7,7 @@ PROGRAM ORBIT
 
 !  Time and time step
    REAL(KIND=p) :: t, dt
-!   INTEGER :: N, MAXN
+   INTEGER :: N, MAXN
 
 !  Intermediate quantities for Runge-Kutta (RK4)
 !   REAL(KIND=p), DIMENSION(2) :: 
@@ -19,7 +19,7 @@ PROGRAM ORBIT
 !   WRITE(*,*)'#Number of steps is set to: ',MAXN,'.'
 
 !  Define initial paramters
-!   t=0
+   t=0
    CALL INIT_EARTH(r,v)
    
    OPEN(unit=11,file="EarthOrbit_Euler.dat")
@@ -32,7 +32,8 @@ PROGRAM ORBIT
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!  IMPLEMENT EULER INTEGRATION HERE  !!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-
+      r(N) = r(N-1) + v(N-1)
+      v(N) = v(N-1) - 13.3159162*333054.253*r(N-1)/pow(fabs(r(N-1)), 3)
       WRITE(11,*)t, r
       WRITE(12,*)t, ENERGY(Me,r,v)
 
