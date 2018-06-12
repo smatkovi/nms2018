@@ -7,8 +7,8 @@ PROGRAM ORBIT
    REAL, DIMENSION(2) :: r,v,rn,vn
 
 !  Time and time step
-   REAL :: t, dt, lenr
-   INTEGER :: N, MAXN
+   REAL :: t, dt=0.01
+   INTEGER :: N, MAXN=365/0.01
 
 !  Intermediate quantities for Runge-Kutta (RK4)
 !   REAL, DIMENSION(2) :: 
@@ -33,9 +33,9 @@ PROGRAM ORBIT
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!  IMPLEMENT EULER INTEGRATION HERE  !!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-      rn = r + v
-      vn = v - 13.3159162*333054.253*r/norm2(r)**3
-      WRITE(11,*)t, r
+      rn = r + dt*N*v
+      vn = v - dt*N*13.3159162*333054.253*r/(norm2(r)**3)
+      WRITE(11,*)N*dt, r
 !      WRITE(12,*)t, ENERGY(Me,r,v)
       r=rn
       v=vn
