@@ -7,8 +7,8 @@ PROGRAM ORBIT
    REAL, DIMENSION(2) :: r,v,rn,vn
 
 !  Time and time step
-   REAL :: t, dt=0.01
-   INTEGER :: N, MAXN=365/0.01
+   REAL :: t, dt=1
+   INTEGER :: N, MAXN=365000000
 
 !  Intermediate quantities for Runge-Kutta (RK4)
 !   REAL, DIMENSION(2) :: 
