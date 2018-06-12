@@ -1,17 +1,17 @@
 PROGRAM ORBIT
-   USE constants
+   !USE constants
    IMPLICIT NONE
    
    !real :: force_sun
 !  Define position and velocity Vector/Arrays
-   REAL(KIND=p), DIMENSION(2) :: r,v
+   REAL, DIMENSION(2) :: r,v,rn,vn
 
 !  Time and time step
-   REAL(KIND=p) :: t, dt
+   REAL :: t, dt, lenr
    INTEGER :: N, MAXN
 
 !  Intermediate quantities for Runge-Kutta (RK4)
-!   REAL(KIND=p), DIMENSION(2) :: 
+!   REAL, DIMENSION(2) :: 
 
 !  Define simulation length and time step size first
 
@@ -21,7 +21,7 @@ PROGRAM ORBIT
 
 !  Define initial paramters
    t=0
-   CALL INIT_EARTH(r,v)
+   CALL init_earth(r,v)
    
    OPEN(unit=11,file="EarthOrbit_Euler.dat")
    OPEN(unit=12,file="EarthOrbit_Energy_Euler.dat")
@@ -33,12 +33,14 @@ PROGRAM ORBIT
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!  IMPLEMENT EULER INTEGRATION HERE  !!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-      r(N, N) = r(N-1, N-1) + v(N-1, N-1)
-      v(N, N) = v(N-1, N-1) - 13.3159162*333054.253*r(N-1, N-1)/pow(norm2(r(N-1, N-1)), 3)
+      rn = r + v
+      vn = v - 13.3159162*333054.253*r/norm2(r)**3
       WRITE(11,*)t, r
 !      WRITE(12,*)t, ENERGY(Me,r,v)
+      r=rn
+      v=vn
 
-!   ENDDO
+   ENDDO
 
    CLOSE(11)
    CLOSE(12)
@@ -46,7 +48,7 @@ PROGRAM ORBIT
 
 !  Define initial paramters for earth again
    t=0
-   CALL INIT_EARTH(r,v)
+   CALL init_earth(r,v)
 
    OPEN(unit=11,file="EarthOrbit_RK4.dat")
 !   OPEN(unit=12,file="EarthOrbit_Energy_RK4.dat")
@@ -61,7 +63,7 @@ PROGRAM ORBIT
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 !     Integrate r and v using RK4
 
-      WRITE(11,*)t, r
+ !     WRITE(11,*)t, r
 !      WRITE(12,*)t, ENERGY(Me,r,v)
 !   ENDDO
    
@@ -71,7 +73,7 @@ PROGRAM ORBIT
 
 
 
-!CONTAINS
+CONTAINS
 
 !                                                                                           ->
 ! This function returns the gravitational force of the sun acting on a mass m at coordinate  r  
@@ -80,9 +82,9 @@ PROGRAM ORBIT
 !real function FORCE_SUN(m,r)
 !   USE constants
 !   IMPLICIT NONE
-!   REAL(KIND=p), DIMENSION(2) :: FORCE_SUN
-!   REAL(KIND=p), DIMENSION(2) :: r      ! position of mass
-!   REAL(KIND=p) :: m                    ! and mass m
+!   REAL, DIMENSION(2) :: FORCE_SUN
+!   REAL, DIMENSION(2) :: r      ! position of mass
+!   REAL :: m                    ! and mass m
 
  !  FORCE_SUN
 !END
@@ -95,9 +97,9 @@ PROGRAM ORBIT
 !FUNCTION ENERGY(m,r,v)
  !  USE constants
   ! IMPLICIT NONE
-   !REAL(KIND=p) :: ENERGY
-   !REAL(KIND=p) :: m
-   !REAL(KIND=p), DIMENSION(2) :: r,v
+   !REAL :: ENERGY
+   !REAL :: m
+   !REAL, DIMENSION(2) :: r,v
 
 !
 !   GESAMTENERGIE MUSS HIER RICHTIG BERECHNET WERDEN.
@@ -109,9 +111,10 @@ PROGRAM ORBIT
 !                                 ->    ->
 ! This routine defines the initial r and v values for the earth.
 !
-SUBROUTINE INIT_EARTH(r,v)
+!contains
+subroutine init_earth(r,v)
    IMPLICIT NONE
-   REAL(KIND=p), DIMENSION(2) :: r,v
+   REAL, DIMENSION(2) :: r,v
 
 !
 !   ANFANGSWERTE MUESSEN HIER EINGESETZT WERDEN
@@ -119,10 +122,5 @@ SUBROUTINE INIT_EARTH(r,v)
    r = (/ 1.0 , 0.0 /)
    v = (/ 0.0 , -0.017326 /)
 
-END
-
-
-END PROGRAM
-
-
-
+end subroutine init_earth
+end program
