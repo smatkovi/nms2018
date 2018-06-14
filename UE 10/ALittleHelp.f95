@@ -20,10 +20,9 @@
    enddo
 
 !mean values and standard deviation
-   integer MW(5)
+   integer, parameter :: MW(5)=(/30,426,602,1223,167/)
 !                  BG WM  GM  CSF  SB
-   parameter (MW=(/30,426,602,1223,167/))
-   integer SIGMA(5)
+   integer SIGMA(4)
    parameter (SIGMA=(/30,59,102,307,69/))
  
 !random tissue in 1..5:
