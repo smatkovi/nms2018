@@ -8,7 +8,11 @@ program helium
     y(n) = 2.0*y(n-1)*(1.0 - 5.0/12.0*g(n*1.0-1.0) ) - y(n-2)*(1.0 + (1.0/12.0)*g(n*1.0-2.0) )
     y(n) = y(n)/(1.0 + g(n*1.0)/12.0)
   end do
-  write(*,*) y
+  open(unit=13, file="helium.dat")
+  do n=1, 1000
+    write(13,*) y(n)
+  enddo
+  close(13)
 
   contains
   real function g(r)
